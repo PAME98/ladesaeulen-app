@@ -1,0 +1,24 @@
+{# templates/bundles/EasyAdminBundle/crud/index.html.twig #}
+
+{# DO THIS: the '!' symbol tells Symfony to extend from the original template #}
+{% extends '@!EasyAdmin/crud/index.html.twig' %}
+
+    {% block content_title %}
+        {%- apply spaceless -%}
+            {% set custom_page_title = ea.crud.customPageTitle('index') %}
+            {{ custom_page_title is null
+            ? (ea.crud.defaultPageTitle('index')|trans(ea.i18n.translationParameters, 'EasyAdminBundle'))|raw
+            : (custom_page_title|trans(ea.i18n.translationParameters))|raw }}
+        {%- endapply -%}
+{% endblock content_title %}
+
+{% block global_actions %}
+    <div class="global-actions justify-content-between col-12">
+        <div class="mb-5">
+            {{ render(controller('App\\Controller\\Form\\CsvFileController::new')) }}
+        </div>
+        {% for action in global_actions %}
+            <div class="d-flex justify-content-end">{{ include(action.templatePath, { action: action }, with_context = false) }}</div>
+        {% endfor %}
+    </div>
+{% endblock global_actions %}

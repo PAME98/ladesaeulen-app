@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <link rel="icon"
+          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+    {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+    <title>Custom Markers</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+              crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css"
+              integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA=="
+              crossorigin="anonymous" referrerpolicy="no-referrer"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.12.0/css/ol.css" type="text/css">
+        <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.12.0/build/ol.js"></script>
+    {% endblock %}
+
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
+</head>
+<body>
+{% block body %}
+    <div class="container wrapper">
+        <div class="row d-flex mt-3 mb-5 align-items-center">
+            <div class="col-12"><span><h3 class="text-nowrap">cms-light</h3></span></div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-12 mb-5">
+                <div id="map" style="height: 400px; width: 100%"></div>
+                <script type="text/javascript">
+                    var map = new ol.Map({
+                        target: 'map',
+                        layers: [
+                            new ol.layer.Tile({
+                                source: new ol.source.OSM()
+                            })
+                        ],
+                        view: new ol.View({
+                            center: ol.proj.fromLonLat([37.41, 8.82]),
+                            zoom: 4
+                        })
+                    });
+                </script>
+                <table class=" table table-hover text-center w-100">
+                    <thead class="table-secondary">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Titel</th>
+                        <th scope="col">Typ</th>
+                        <th scope="col">Ort</th>
+                        <th scope="col">Adresse</th>
+                        <th scope="col">PLZ</th>
+                        <th scope="col">Text</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for loadingStation in loadingStations %}
+                        <tr>
+                            <th scope="col">{{ loadingStation.id }}</th>
+                            <td>{{ loadingStation.title }}</td>
+                            <td>{{ loadingStation.type }}</td>
+                            <td>{{ loadingStation.city }}</td>
+                            <td>{{ loadingStation.address }}</td>
+                            <td>{{ loadingStation.postalcode }}</td>
+                            <td>{{ loadingStation.description }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-12 col-lg-8 mb-5">
+                <div class="w-100">
+                    <div class="text-center">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2"></div>
+        </div>
+    </div>
+{% endblock %}
+</body>
+</html>
