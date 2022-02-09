@@ -9,6 +9,7 @@ use App\Entity\User;
 use App\Form\CsvFileType;
 use App\Repository\ArticleRepository;
 use App\Repository\LoadingStationRepository;
+use App\Service\GeoDataService;
 use Doctrine\Persistence\ManagerRegistry;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
@@ -31,8 +32,9 @@ class CsvFileController extends AbstractController
     private Interpreter $interpreter;
     private AdminUrlGenerator $adminUrlGenerator;
     private ManagerRegistry $doctrine;
+    private GeoDataService $geoDataService;
 
-    public function __construct(LoadingStationCrudController $loadingStationCrudController, AdminUrlGenerator $adminUrlGenerator, ManagerRegistry $doctrine)
+    public function __construct(LoadingStationCrudController $loadingStationCrudController, AdminUrlGenerator $adminUrlGenerator, ManagerRegistry $doctrine, GeoDataService $geoDataService)
     {
         $this->config = new LexerConfig();
         $this->config->setDelimiter(";");
@@ -41,6 +43,7 @@ class CsvFileController extends AbstractController
         $this->loadingStationCrudController = $loadingStationCrudController;
         $this->adminUrlGenerator = $adminUrlGenerator;
         $this->doctrine = $doctrine;
+        $this->geoDataService = $geoDataService;
     }
 
     /**
@@ -76,6 +79,12 @@ class CsvFileController extends AbstractController
                             $postalCode = $organizedColumn[5];
                             $description = $organizedColumn[6];
                             $loadingStation->setTitle($title)->setType($type)->setCity($city)->setAddress($address)->setPostalCode($postalCode)->setDescription($description);
+                            $response = $this->geoDataService->findGeoData($loadingStation);
+                            $responseJson = json_decode($response);
+                            if($responseJson){
+                                $loadingStation->setLongitude($responseJson[0]->lon);
+                                $loadingStation->setLatitude($responseJson[0]->lat);
+                            }
                             $this->persistLoadingStation($loadingStation);
                         }
                 }
@@ -86,7 +95,7 @@ class CsvFileController extends AbstractController
 
             // ... perform some action, such as saving the task to the database
 
-          return $this->redirectToRoute($url);
+          return $this->redirect($url);
         }
 
         return $this->renderForm('csv_form.html.twig', [
