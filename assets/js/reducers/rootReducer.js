@@ -1,4 +1,4 @@
-import {EDIT_MAP_DATA, LOADING_CSV, LOADING_CSV_SUCCESS} from '../actions/actions'
+import {SELECT_LOADINGSTATION, LOADING_CSV, LOADING_CSV_SUCCESS, SET_FILTERS} from '../actions/actions'
 import OlView from "ol/View";
 import {fromLonLat} from "ol/proj";
 import OlMap from "ol/Map";
@@ -10,20 +10,27 @@ let options = {
         zoom: 8,
         center: fromLonLat([11.5, 53.5])
     }),
-        layers: [
-            new TileLayer({
-                source: new OSM()
-            })
-        ],
-        controls: [],
-        overlays: []
+    layers: [
+        new TileLayer({
+            source: new OSM()
+        })
+    ],
+    controls: [],
+    overlays: []
 }
 let mapObject = new OlMap(options);
 
 export const initialState = {
     csvData: [],
     mapData: mapObject,
-    fetching: false
+    fetching: false,
+    selectedLoadingStation: {},
+    filters: {
+        city: "",
+        address: "",
+        postalCode: "",
+        description: ""
+    }
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -40,10 +47,15 @@ const rootReducer = (state = initialState, action) => {
                 csvData: [...action.csvData],
                 fetching: action.fetching
             }
-        case EDIT_MAP_DATA:
+        case SET_FILTERS:
             return {
                 ...state,
-                mapData: {...action.mapData}
+                filters: {...action.filters}
+            }
+        case SELECT_LOADINGSTATION:
+            return {
+                ...state,
+               selectedLoadingStation: action.selectedLoadingStation
             }
         default:
             return state;

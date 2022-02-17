@@ -1,0 +1,15 @@
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content_title 'Willkommen in der Administatoransicht der Ladesäulen-App' %}
+
+{% block main %}
+    <style>
+        p { max-width: 600px; }
+    </style>
+
+    <p>
+        Hier können Ladessstationen hinzugefügt oder angepasst werden. Zudem steht ein Csv-Upload zur Verfügung.
+    </p>
+
+{% endblock %}

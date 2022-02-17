@@ -1,18 +1,19 @@
 import {connect} from "react-redux";
-import {editMapDataAction, loadCsvDataAction} from "../actions/actions";
+import {featureSelectAction, loadCsvDataAction} from "../actions/actions";
 import MapComponent from "../components/MapComponent";
 
 function mapStateToProps(state) {
     return {
         csvData: state.csvData,
         fetching: state.fetching,
-        mapData: state.mapData
+        mapData: state.mapData,
+        selectedLoadingStation: state.selectedLoadingStation
     };
 }
 function mapDispatchToProps(dispatch) {
     return {
         loadCsvData: () => dispatch(loadCsvDataAction()),
-        editMapData: (mapData) => dispatch(editMapDataAction(mapData)),
+        editMapData: (mapData) => dispatch(featureSelectAction(mapData)),
     };
 }
 

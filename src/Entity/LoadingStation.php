@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Repository\LoadingStationRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -11,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ApiResource(
  *     paginationEnabled=false
  * )
+ * @ApiFilter(SearchFilter::class, properties={"city":"partial", "address":"partial", "postalCode":"partial", "description":"partial"})
  */
 
 class LoadingStation

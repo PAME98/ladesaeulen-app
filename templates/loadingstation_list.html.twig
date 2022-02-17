@@ -29,46 +29,11 @@
 {% block body %}
     <div class="container wrapper">
         <div class="row d-flex mt-3 mb-5 align-items-center">
-            <div class="col-12"><span><h3 class="text-nowrap">cms-light</h3></span></div>
+            <div class="col-12"><span><h3 class="text-nowrap">Ladesäulen-App</h3></span></div>
         </div>
         <div class="row mt-5">
             <div class="col-12 mb-5">
             <div class="map" id="map-component"></div>
-                <table class=" table table-hover text-center w-100">
-                    <thead class="table-secondary">
-                    <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Titel</th>
-                        <th scope="col">Typ</th>
-                        <th scope="col">Ort</th>
-                        <th scope="col">Adresse</th>
-                        <th scope="col">PLZ</th>
-                        <th scope="col">Text</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for loadingStation in loadingStations %}
-                        <tr>
-                            <th scope="col">{{ loadingStation.id }}</th>
-                            <td>{{ loadingStation.title }}</td>
-                            <td>{{ loadingStation.type }}</td>
-                            <td>{{ loadingStation.city }}</td>
-                            <td>{{ loadingStation.address }}</td>
-                            <td>{{ loadingStation.postalcode }}</td>
-                            <td>{{ loadingStation.description }}</td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-12 col-lg-8 mb-5">
-                <div class="w-100">
-                    <div class="text-center">
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-2"></div>
-        </div>
     </div>
 {% endblock %}
 </body>

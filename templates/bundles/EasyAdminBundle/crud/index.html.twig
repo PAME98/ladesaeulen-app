@@ -2,7 +2,6 @@
 
 {# DO THIS: the '!' symbol tells Symfony to extend from the original template #}
 {% extends '@!EasyAdmin/crud/index.html.twig' %}
-
     {% block content_title %}
         {%- apply spaceless -%}
             {% set custom_page_title = ea.crud.customPageTitle('index') %}
@@ -10,15 +9,35 @@
             ? (ea.crud.defaultPageTitle('index')|trans(ea.i18n.translationParameters, 'EasyAdminBundle'))|raw
             : (custom_page_title|trans(ea.i18n.translationParameters))|raw }}
         {%- endapply -%}
-{% endblock content_title %}
+    {% endblock content_title %}
 
 {% block global_actions %}
     <div class="global-actions justify-content-between col-12">
         <div class="mb-5">
             {{ render(controller('App\\Controller\\Form\\CsvFileController::new')) }}
+            {% block javascripts %}
+                <script>
+                    document.querySelector("button[type=submit]").disabled = true;
+                    document.querySelector("input[type=file]").onchange = () => {
+                        let value = document.querySelector("input[type=file]").value;
+                        if (value) {
+                            document.querySelector("button[type=submit]").disabled = false;
+                        }
+                    };
+                    document.querySelector("input[type=file]").onblur = () => {
+                        let value = document.querySelector("input[type=file]").value;
+                        if (value) {
+                            document.querySelector("button[type=submit]").disabled = true;
+                        }
+                    };
+                </script>
+            {% endblock %}
         </div>
         {% for action in global_actions %}
-            <div class="d-flex justify-content-end">{{ include(action.templatePath, { action: action }, with_context = false) }}</div>
+            <div class="d-flex justify-content-end">{{ include(action.templatePath, { action: action }, with_context = false) }}
+                <a class="btn btn-danger" href="/loadingStations-delete">Alle Daten löschen</a>
+            </div>
+            <span></span>
         {% endfor %}
     </div>
 {% endblock global_actions %}

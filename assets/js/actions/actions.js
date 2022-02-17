@@ -3,16 +3,23 @@ import axios from "axios";
 export const LOADING_CSV = 'LOADING_CSV'
 export const LOADING_CSV_SUCCESS = 'LOADING_CSV_SUCCESS'
 export const LOADING_CSV_FAIL = 'LOADED_CSV'
-export const EDIT_MAP_DATA = 'EDIT_MAP_DATA'
+export const SELECT_LOADINGSTATION = 'SELECT_LOADINGSTATION'
+export const SET_FILTERS = 'SET_FILTERS'
 
-export const http =  axios.create({
+export const http = axios.create({
     baseURL: "https://ladesaeulen-app.ddev.site/api"
 });
 
-export const loadCsvDataAction = () => {
+export const loadCsvDataAction = (filters) => {
+    let queryString;
+    if (filters) {
+        queryString = new URLSearchParams(filters);
+    } else {
+        queryString = ""
+    }
     return dispatch => {
         dispatch(loadingCsvStarted());
-        http.get("/loading_stations", {
+        http.get("/loading_stations?" + queryString, {
                 headers: {'Content-Type': 'application/json', 'Accept': 'application/json'}
             }
         )
@@ -27,7 +34,7 @@ export const loadCsvDataAction = () => {
 
 const loadingCsvStarted = () => ({
     type: LOADING_CSV,
-    fetching:true
+    fetching: true
 });
 
 const loadingCsvDataSuccess = csvData => ({
@@ -42,7 +49,12 @@ const loadingCsvDataFailure = error => ({
     fetching: false
 });
 
-export const editMapDataAction = mapData => ({
-    type: EDIT_MAP_DATA,
-    mapData: {...mapData}
+export const selectLoadingStation = loadingStation => ({
+    type: SELECT_LOADINGSTATION,
+    selectedLoadingStation: {...loadingStation}
+})
+
+export const setFilters = filters => ({
+    type: SET_FILTERS,
+    filters: {...filters},
 })

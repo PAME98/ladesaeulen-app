@@ -64,7 +64,6 @@ class CsvFileController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // $form->getData() holds the submitted values
             // but, the original `$task` variable has also been updated
-            $csv = $form->getData();
 
             $this->interpreter->addObserver(function(array $columns) {
                 $organizedColumns = array_chunk($columns,7);
